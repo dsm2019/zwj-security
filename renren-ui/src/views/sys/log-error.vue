@@ -6,8 +6,8 @@
       </el-form-item>
     </el-form>
     <el-table v-loading="state.dataListLoading" :data="state.dataList" border @sort-change="state.dataListSortChangeHandle" style="width: 100%">
-      <el-table-column prop="requestUri" label="请求URI" header-align="center" align="center"></el-table-column>
-      <el-table-column prop="requestMethod" label="请求方式" header-align="center" align="center"></el-table-column>
+      <el-table-column prop="requestUri" label="请求URI" header-align="center" align="center" :show-overflow-tooltip="true"></el-table-column>
+      <el-table-column prop="requestMethod" label="请求方式" header-align="center" align="center" :show-overflow-tooltip="true"></el-table-column>
       <el-table-column prop="requestParams" label="请求参数" header-align="center" align="center" width="150" :show-overflow-tooltip="true"></el-table-column>
       <el-table-column prop="ip" label="操作IP" header-align="center" align="center"></el-table-column>
       <el-table-column prop="userAgent" label="用户代理" header-align="center" align="center" width="150" :show-overflow-tooltip="true"></el-table-column>
