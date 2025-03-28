@@ -97,15 +97,14 @@ renren-security
 
 **本地部署**
 - 通过git下载源码
-- idea、eclipse需安装lombok插件，不然会提示找不到entity的get set方法
 - 创建数据库renren_security，数据库编码为UTF-8
 - 执行db/mysql.sql文件，初始化数据
 - 修改application-dev.yml文件，更新MySQL账号和密码
 - 在renren-security目录下，执行mvn clean install
-- Eclipse、IDEA运行AdminApplication.java，则可启动项目【renren-admin】
+- IDEA运行AdminApplication.java，则可启动项目【renren-admin】
 - renren-admin访问路径：http://localhost:8080/renren-admin
 - swagger文档路径：http://localhost:8080/renren-admin/doc.html
-- 再启动前端项目，前端地址：https://gitee.com/renrenio/renren-ui
+- 再启动前端工程
 - 账号密码：admin/admin
 <br>
 
@@ -120,6 +119,7 @@ renren-security
 ### 如何交流、反馈、参与贡献？
 - 开发文档：https://www.renren.io/guide/security
 - Gitee仓库：https://gitee.com/renrenio/renren-security
+- GitCode仓库：https://gitcode.com/renrenio/renren-security
 - [人人开源](https://www.renren.io)：https://www.renren.io
 - 如需关注项目最新动态，请Watch、Star项目，同时也是对项目最好的支持
 <br>
