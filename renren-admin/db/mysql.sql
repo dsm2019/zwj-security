@@ -502,3 +502,28 @@ CREATE INDEX IDX_QRTZ_FT_J_G ON QRTZ_FIRED_TRIGGERS(SCHED_NAME,JOB_NAME,JOB_GROU
 CREATE INDEX IDX_QRTZ_FT_JG ON QRTZ_FIRED_TRIGGERS(SCHED_NAME,JOB_GROUP);
 CREATE INDEX IDX_QRTZ_FT_T_G ON QRTZ_FIRED_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP);
 CREATE INDEX IDX_QRTZ_FT_TG ON QRTZ_FIRED_TRIGGERS(SCHED_NAME,TRIGGER_GROUP);
+
+
+
+CREATE TABLE dnf_character (
+  id bigint NOT NULL COMMENT '角色ID',
+  name varchar(50) NOT NULL COMMENT '角色名字',
+  profession varchar(50) NOT NULL COMMENT '角色职业',
+  fame int COMMENT '角色名望',
+  simulated_damage int COMMENT '模拟伤害',
+  level int COMMENT '角色等级',
+  attack_speed int COMMENT '攻击速度',
+  movement_speed int COMMENT '移动速度',
+  creator bigint COMMENT '创建者',
+  create_date datetime COMMENT '创建时间',
+  updater bigint COMMENT '更新者',
+  update_date datetime COMMENT '更新时间',
+  primary key (id),
+  key idx_name (name),
+  key idx_profession (profession),
+  key idx_fame (fame),
+  key idx_simulated_damage (simulated_damage)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='游戏角色表';
+
+alter table dnf_character
+    add user_id bigint not null comment '关联用户id';
