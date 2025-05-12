@@ -1,4 +1,4 @@
-package io.renren.modules.game.controller;
+package io.renren.modules.dnf.controller;
 
 import io.renren.common.annotation.LogOperation;
 import io.renren.common.constant.Constant;
@@ -9,8 +9,8 @@ import io.renren.common.validator.ValidatorUtils;
 import io.renren.common.validator.group.AddGroup;
 import io.renren.common.validator.group.DefaultGroup;
 import io.renren.common.validator.group.UpdateGroup;
-import io.renren.modules.game.dto.DnfCharacterDto;
-import io.renren.modules.game.service.DnfCharacterService;
+import io.renren.modules.dnf.dto.DnfCharacterDto;
+import io.renren.modules.dnf.service.DnfCharacterService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -45,7 +45,7 @@ public class DnfCharacterController {
             @Parameter(name = Constant.ORDER, description = "排序方式，可选值(asc、desc)", in = ParameterIn.QUERY, ref = "String"),
             @Parameter(name = "dnf name", description = "dnf 角色名", in = ParameterIn.QUERY, ref = "String")
     })
-    @RequiresPermissions("game:dnf:page")
+    @RequiresPermissions("dnf:character:page")
     public Result<PageData<DnfCharacterDto>> page(@Parameter(hidden = true) @RequestParam Map<String, Object> params) {
         PageData<DnfCharacterDto> page = dnfCharacterService.page(params);
 
@@ -54,7 +54,7 @@ public class DnfCharacterController {
 
     @GetMapping("list")
     @Operation(summary = "列表")
-    @RequiresPermissions("game:dnf:list")
+    @RequiresPermissions("dnf:character:list")
     public Result<List<DnfCharacterDto>> list() {
         List<DnfCharacterDto> data = dnfCharacterService.list(new HashMap<>(1));
 
@@ -63,7 +63,7 @@ public class DnfCharacterController {
 
     @GetMapping("{id}")
     @Operation(summary = "信息")
-    @RequiresPermissions("game:dnf:info")
+    @RequiresPermissions("dnf:character:info")
     public Result<DnfCharacterDto> get(@PathVariable("id") Long id) {
         DnfCharacterDto data = dnfCharacterService.get(id);
 
@@ -73,7 +73,7 @@ public class DnfCharacterController {
     @PostMapping
     @Operation(summary = "保存")
     @LogOperation("保存")
-    @RequiresPermissions("game:dnf:save")
+    @RequiresPermissions("dnf:character:save")
     public Result save(@RequestBody DnfCharacterDto dto) {
         //效验数据
         ValidatorUtils.validateEntity(dto, AddGroup.class, DefaultGroup.class);
@@ -86,7 +86,7 @@ public class DnfCharacterController {
     @PutMapping
     @Operation(summary = "修改")
     @LogOperation("修改")
-    @RequiresPermissions("game:dnf:update")
+    @RequiresPermissions("dnf:character:update")
     public Result update(@RequestBody DnfCharacterDto dto) {
         //效验数据
         ValidatorUtils.validateEntity(dto, UpdateGroup.class, DefaultGroup.class);
@@ -99,7 +99,7 @@ public class DnfCharacterController {
     @DeleteMapping
     @Operation(summary = "删除")
     @LogOperation("删除")
-    @RequiresPermissions("game:dnf:delete")
+    @RequiresPermissions("dnf:character:delete")
     public Result delete(@RequestBody Long[] ids) {
         //效验数据
         AssertUtils.isArrayEmpty(ids, "id");

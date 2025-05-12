@@ -506,24 +506,42 @@ CREATE INDEX IDX_QRTZ_FT_TG ON QRTZ_FIRED_TRIGGERS(SCHED_NAME,TRIGGER_GROUP);
 
 
 CREATE TABLE dnf_character (
-  id bigint NOT NULL COMMENT '角色ID',
-  name varchar(50) NOT NULL COMMENT '角色名字',
-  profession varchar(50) NOT NULL COMMENT '角色职业',
-  fame int COMMENT '角色名望',
-  simulated_damage int COMMENT '模拟伤害',
-  level int COMMENT '角色等级',
-  attack_speed int COMMENT '攻击速度',
-  movement_speed int COMMENT '移动速度',
-  creator bigint COMMENT '创建者',
-  create_date datetime COMMENT '创建时间',
-  updater bigint COMMENT '更新者',
-  update_date datetime COMMENT '更新时间',
-  primary key (id),
-  key idx_name (name),
-  key idx_profession (profession),
-  key idx_fame (fame),
-  key idx_simulated_damage (simulated_damage)
+                               id bigint NOT NULL COMMENT '角色ID',
+                               name varchar(50) NOT NULL COMMENT '角色名字',
+                               profession varchar(50) NOT NULL COMMENT '角色职业',
+                               fame int COMMENT '角色名望',
+                               simulated_damage int COMMENT '模拟伤害',
+                               level int COMMENT '角色等级',
+                               attack_speed int COMMENT '攻击速度',
+                               movement_speed int COMMENT '移动速度',
+                               user_id bigint NOT NULL COMMENT '关联用户id',
+                               creator bigint COMMENT '创建者',
+                               create_date datetime COMMENT '创建时间',
+                               updater bigint COMMENT '更新者',
+                               update_date datetime COMMENT '更新时间',
+                               primary key (id),
+                               key idx_name (name),
+                               key idx_profession (profession),
+                               key idx_fame (fame),
+                               key idx_simulated_damage (simulated_damage)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='游戏角色表';
 
-alter table dnf_character
-    add user_id bigint not null comment '关联用户id';
+CREATE TABLE dnf_history_attribute(
+                               id bigint NOT NULL COMMENT 'ID',
+                               character_id bigint NOT NULL COMMENT '角色ID',
+                               character_name varchar(50) NOT NULL COMMENT '角色名字',
+                               fame int COMMENT '角色名望',
+                               simulated_damage int COMMENT '模拟伤害',
+                               record_date varchar(20) COMMENT '记录日期',
+                               year smallint COMMENT '年份',
+                               month tinyint COMMENT '月份',
+                               day tinyint COMMENT '日期',
+                               week tinyint COMMENT '星期几',
+                               creator bigint COMMENT '创建者',
+                               create_date datetime COMMENT '创建时间',
+                               updater bigint COMMENT '更新者',
+                               update_date datetime COMMENT '更新时间',
+                               primary key (id),
+                               key idx_character_id (character_id),
+                               key idx_record_date (record_date)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='历史属性表';

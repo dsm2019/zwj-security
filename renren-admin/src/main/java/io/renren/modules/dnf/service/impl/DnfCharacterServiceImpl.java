@@ -1,4 +1,4 @@
-package io.renren.modules.game.service.impl;
+package io.renren.modules.dnf.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -7,18 +7,16 @@ import io.renren.common.constant.Constant;
 import io.renren.common.page.PageData;
 import io.renren.common.service.impl.BaseServiceImpl;
 import io.renren.common.utils.ConvertUtils;
-import io.renren.modules.game.dao.DnfCharacterDao;
-import io.renren.modules.game.dto.DnfCharacterDto;
-import io.renren.modules.game.entity.DnfCharacterEntity;
-import io.renren.modules.game.service.DnfCharacterService;
+import io.renren.modules.dnf.dao.DnfCharacterDao;
+import io.renren.modules.dnf.dto.DnfCharacterDto;
+import io.renren.modules.dnf.entity.DnfCharacterEntity;
+import io.renren.modules.dnf.service.DnfCharacterService;
 import io.renren.modules.sys.dto.SysUserDTO;
-import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.sys.service.SysUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -31,6 +29,11 @@ public class DnfCharacterServiceImpl extends BaseServiceImpl<DnfCharacterDao, Dn
 
     @Override
     public PageData<DnfCharacterDto> page(Map<String, Object> params) {
+        if ("".equals(params.get(Constant.ORDER_FIELD)))  {
+            params.put(Constant.ORDER_FIELD, "fame");
+            params.put(Constant.ORDER, Constant.DESC);
+        }
+
         IPage<DnfCharacterEntity> page = baseDao.selectPage(
                 getPage(params, Constant.CREATE_DATE, false),
                 getWrapper(params)
@@ -51,6 +54,7 @@ public class DnfCharacterServiceImpl extends BaseServiceImpl<DnfCharacterDao, Dn
 
         QueryWrapper<DnfCharacterEntity> wrapper = new QueryWrapper<>();
         wrapper.like(StrUtil.isNotBlank(name), "name", name);
+        wrapper.orderByDesc("fame");
 
         //普通管理员，只能查询所属部门及子部门的数据
 //        UserDetail user = SecurityUser.getUser();
@@ -88,7 +92,7 @@ public class DnfCharacterServiceImpl extends BaseServiceImpl<DnfCharacterDao, Dn
     @Override
     public void save(DnfCharacterDto dto) {
         DnfCharacterEntity entity = ConvertUtils.sourceToTarget(dto, DnfCharacterEntity.class);
-        baseDao.insert(entity);
+        insert(entity);
     }
 
     @Override

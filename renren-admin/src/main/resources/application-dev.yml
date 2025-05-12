@@ -3,9 +3,9 @@ spring:
     druid:
       #MySQL
       driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://localhost:3306/renren_security?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&nullCatalogMeansCurrent=true
+      url: jdbc:mysql://localhost:3306/zwj_security?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&nullCatalogMeansCurrent=true
       username: root
-      password: 
+      password: 12345678
       #达梦8
 #      driver-class-name: dm.jdbc.driver.DmDriver
 #      url: jdbc:dm://192.168.10.10:5236/renren_security?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&nullCatalogMeansCurrent=true
@@ -45,14 +45,14 @@ spring:
         #login-username: admin
         #login-password: admin
         #达梦数据库，需要注释掉，其他数据库可以打开
-#      filter:
-#        stat:
-#          log-slow-sql: true
-#          slow-sql-millis: 1000
-#          merge-sql: false
-#        wall:
-#          config:
-#            multi-statement-allow: true
+      filter:
+        stat:
+          log-slow-sql: true
+          slow-sql-millis: 1000
+          merge-sql: false
+        wall:
+          config:
+            multi-statement-allow: true
 
 ##多数据源的配置，需要引用renren-dynamic-datasource
 #dynamic:
@@ -67,3 +67,4 @@ spring:
 #      url: jdbc:postgresql://123456:5432/renren_security
 #      username: postgres
 #      password: 123456
+

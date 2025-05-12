@@ -6,7 +6,7 @@
  * 版权所有，侵权必究！
  */
 
-package io.renren.modules.game.dto;
+package io.renren.modules.dnf.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.renren.common.validator.group.AddGroup;
@@ -20,7 +20,6 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 /**
  * 角色管理
@@ -42,10 +41,6 @@ public class DnfCharacterDto implements Serializable {
 	@NotBlank(message="{sysrole.name.require}", groups = DefaultGroup.class)
 	private String name;
 
-	@Schema(title = "创建时间")
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
-	private Date createDate;
-
 	@Schema(title = "职业")
 	private String profession;
 
@@ -64,8 +59,15 @@ public class DnfCharacterDto implements Serializable {
 	@Schema(title = "移动速度")
 	private Integer movementSpeed;
 
+	@Schema(title = "sort")
+	private Integer sort;
+
 	@Schema(title = "用户id")
 	private Long userId;
+
+	@Schema(title = "创建时间")
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	private Date createDate;
 
 	@Schema(title = "用户名称")
 	private String userName;

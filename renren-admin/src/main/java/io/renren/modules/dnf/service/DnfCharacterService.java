@@ -1,9 +1,9 @@
-package io.renren.modules.game.service;
+package io.renren.modules.dnf.service;
 
 import io.renren.common.page.PageData;
 import io.renren.common.service.BaseService;
-import io.renren.modules.game.dto.DnfCharacterDto;
-import io.renren.modules.game.entity.DnfCharacterEntity;
+import io.renren.modules.dnf.dto.DnfCharacterDto;
+import io.renren.modules.dnf.entity.DnfCharacterEntity;
 
 import java.util.List;
 import java.util.Map;
