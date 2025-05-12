@@ -71,6 +71,7 @@ const init2 = (row: IObject) => {
   }
 
   dataForm.id = "";
+  console.log("=======", row)
   dataForm.parentId = row.id;
 
 
