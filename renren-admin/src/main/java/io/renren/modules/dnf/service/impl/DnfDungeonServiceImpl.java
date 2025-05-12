@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static io.renren.modules.dnf.enums.DungeonsTypeEnum.getByCode;
 
@@ -44,7 +45,9 @@ public class DnfDungeonServiceImpl extends BaseServiceImpl<DnfDungeonDao, DnfDun
         String name = (String) params.get("name");
         QueryWrapper<DnfDungeonEntity> wrapper = new QueryWrapper<>();
         wrapper.like(StrUtil.isNotBlank(name), "name", name);
-        wrapper.eq("parent_id", 0);
+
+        Long parentId = (Long) params.get("parent_id");
+        wrapper.eq("parent_id", Objects.requireNonNullElse(parentId, 0));
 
         return wrapper;
     }
@@ -53,7 +56,7 @@ public class DnfDungeonServiceImpl extends BaseServiceImpl<DnfDungeonDao, DnfDun
         dto.setTypeName(getByCode(dto.getType()).getName());
 
         if (dto.isLegion() && dto.isParent()) {
-            List<DnfDungeonDto> children = list(Map.of("parent_id", dto.getParentId()));
+            List<DnfDungeonDto> children = list(Map.of("parent_id", dto.getId()));
             dto.setChildren(children);
         }
     }

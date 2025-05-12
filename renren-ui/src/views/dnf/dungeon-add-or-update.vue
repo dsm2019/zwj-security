@@ -7,8 +7,8 @@
       <el-form-item prop="boss" label="boss">
         <el-input v-model="dataForm.boss" placeholder="boss"></el-input>
       </el-form-item>
-      <el-form-item prop="type" label="类型" class="type-list">
-        <el-select v-model="dataForm.type" placeholder="类型">
+      <el-form-item  prop="type" label="类型" class="type-list">
+        <el-select v-model="dataForm.type" :disabled="dataForm.parentId !== 0" placeholder="类型">
           <el-option v-for="type in typeList" :key="type.id" :label="type.name" :value="type.id"></el-option>
         </el-select>
       </el-form-item>
@@ -25,6 +25,7 @@ import { nextTick, reactive, ref } from "vue";
 import baseService from "@/service/baseService";
 import { IObject } from "@/types/interface";
 import { ElMessage } from "element-plus";
+import { getIconList } from "@/utils/utils";
 const emit = defineEmits(["refreshDataList"]);
 
 const visible = ref(false);
@@ -33,7 +34,7 @@ const dataFormRef = ref();
 
 const dataForm = reactive({
   id: "",
-  parentId: "",
+  parentId: 0,
   name: "",
   boss: "",
   type: "",
@@ -59,6 +60,27 @@ const init = (id?: number) => {
       }
     });
   });
+};
+
+const init2 = (row: IObject) => {
+  visible.value = true;
+
+  // 重置表单数据
+  if (dataFormRef.value) {
+    dataFormRef.value.resetFields();
+  }
+
+  dataForm.id = "";
+  dataForm.parentId = row.id;
+
+
+  nextTick(() => {
+    Promise.all([getTypeList()]).then(() => {
+
+    });
+  });
+
+  dataForm.type = row.type;
 };
 
 // 获取类型列表
@@ -95,6 +117,7 @@ const dataFormSubmitHandle = () => {
 };
 
 defineExpose({
-  init
+  init,
+  init2
 });
 </script>

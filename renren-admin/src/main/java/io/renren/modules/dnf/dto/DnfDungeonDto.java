@@ -36,7 +36,7 @@ public class DnfDungeonDto implements Serializable {
     private String typeName;
 
     @Schema(title = "军团父id")
-    private Integer parentId;
+    private Long parentId = 0L;
 
     @Schema(title = "创建时间")
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
