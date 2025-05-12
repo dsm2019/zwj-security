@@ -16,7 +16,7 @@ public class DnfDungeonEntity extends BaseEntity {
     private String name;
     private String boss;
     private Integer type;
-    private Integer parentId;
+    private Long parentId;
 
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Long updater;
