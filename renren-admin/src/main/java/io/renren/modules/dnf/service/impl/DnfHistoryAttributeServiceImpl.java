@@ -72,9 +72,14 @@ public class DnfHistoryAttributeServiceImpl extends BaseServiceImpl<DnfHistoryAt
         }
 
         DnfCharacterDto dnfCharacterDto = dnfCharacterService.get(dto.getCharacterId());
+
         dto.setCharacterName(dnfCharacterDto.getName());
         DnfHistoryAttributeEntity entity = ConvertUtils.sourceToTarget(dto, DnfHistoryAttributeEntity.class);
         insert(entity);
+
+        dnfCharacterDto.setFame(dto.getFame());
+        dnfCharacterDto.setSimulatedDamage(dto.getSimulatedDamage());
+        dnfCharacterService.save(dnfCharacterDto);
     }
 
     private DnfHistoryAttributeEntity findBy(Long characterId, String recordDate) {

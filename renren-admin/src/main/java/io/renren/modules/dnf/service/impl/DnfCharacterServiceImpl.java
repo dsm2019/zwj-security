@@ -17,6 +17,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -55,13 +56,6 @@ public class DnfCharacterServiceImpl extends BaseServiceImpl<DnfCharacterDao, Dn
         QueryWrapper<DnfCharacterEntity> wrapper = new QueryWrapper<>();
         wrapper.like(StrUtil.isNotBlank(name), "name", name);
         wrapper.orderByDesc("fame");
-
-        //普通管理员，只能查询所属部门及子部门的数据
-//        UserDetail user = SecurityUser.getUser();
-//        if (user.getSuperAdmin() == SuperAdminEnum.NO.value()) {
-//            List<Long> deptIdList = sysDeptService.getSubDeptIdList(user.getDeptId());
-//            wrapper.in(deptIdList != null, "dept_id", deptIdList);
-//        }
 
         return wrapper;
     }
@@ -104,5 +98,15 @@ public class DnfCharacterServiceImpl extends BaseServiceImpl<DnfCharacterDao, Dn
     @Override
     public void delete(Long[] ids) {
         baseDao.deleteBatchIds(Arrays.asList(ids));
+    }
+
+    @Override
+    public void refresh() {
+        List<DnfCharacterDto> list = list(new HashMap<>());
+        for (int i = 0; i < list.size(); i++) {
+            DnfCharacterDto dto = list.get(i);
+            dto.setSort(i + 1);
+            update(dto);
+        }
     }
 }

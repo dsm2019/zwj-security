@@ -91,6 +91,13 @@ const onLogin = () => {
           if (res.code === 0) {
             setCache(CacheToken, res.data, true);
             ElMessage.success("登录成功");
+
+            localStorage.setItem("token", res.data.token);
+            // localStorage.setItem(USER_KEY, JSON.stringify(data.user));
+            //
+            // 触发事件通知其他tab页
+            // localStorage.setItem(EVENT_KEY, Date.now().toString())
+
             router.push("/");
           } else {
             ElMessage.error(res.msg);

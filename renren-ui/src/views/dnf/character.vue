@@ -13,6 +13,9 @@
       <el-form-item>
         <el-button v-if="state.hasPermission('sys:role:delete')" type="danger" @click="state.deleteHandle()">删除</el-button>
       </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="refreshSort">刷新排序</el-button>
+      </el-form-item>
     </el-form>
     <el-table v-loading="state.dataListLoading" :data="state.dataList" border @selection-change="state.dataListSelectionChangeHandle" @sort-change="state.dataListSortChangeHandle" style="width: 100%">
       <el-table-column type="selection" header-align="center" align="center" width="50"></el-table-column>
@@ -58,6 +61,8 @@
 import useView from "@/hooks/useView";
 import { reactive, ref, toRefs, watch } from "vue";
 import AddOrUpdate from "./character-add-or-update.vue";
+import baseService from "@/service/baseService";
+import { ElMessage } from 'element-plus'; // 引入 Element UI 的消息提示组件
 
 const view = reactive({
   getDataListURL: "/dnf/character/page",
@@ -98,6 +103,19 @@ const calculatePercentagesAndDamagePerFame = (list) => {
       Math.round(row.simulatedDamage / row.fame) : 0; // 新增：使用Math.round取整
   });
 };
+
+// 新增：调用刷新排序接口的方法
+const refreshSort = async () => {
+  try {
+    await baseService.post("/dnf/character/refreshSort", {});
+    ElMessage.success('刷新排序成功'); // 显示成功提示
+    state.getDataList(); // 重新加载数据
+  } catch (error) {
+    console.error('刷新排序失败:', error);
+    ElMessage.error('刷新排序失败，请稍后重试'); // 显示失败提示
+  }
+};
+
 
 // 监听数据列表变化，计算百分比和伤害除以名望
 watch(() => state.dataList, (newList) => {

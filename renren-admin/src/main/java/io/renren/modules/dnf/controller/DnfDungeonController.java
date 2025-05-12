@@ -9,8 +9,9 @@ import io.renren.common.validator.ValidatorUtils;
 import io.renren.common.validator.group.AddGroup;
 import io.renren.common.validator.group.DefaultGroup;
 import io.renren.common.validator.group.UpdateGroup;
-import io.renren.modules.dnf.dto.DnfCharacterDto;
-import io.renren.modules.dnf.service.DnfCharacterService;
+import io.renren.modules.dnf.dto.DnfDungeonDto;
+import io.renren.modules.dnf.dto.DungeonTypeDto;
+import io.renren.modules.dnf.service.DnfDungeonService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -26,15 +27,15 @@ import java.util.Map;
 
 
 /**
- * DNF 角色控制器
+ * DNF 地下城控制器
  * @author YourName
  */
 @RestController
-@RequestMapping("/dnf/character")
-@Tag(name = "DNF 角色管理")
+@RequestMapping("/dnf/dungeon")
+@Tag(name = "DNF 地下城管理")
 @AllArgsConstructor
-public class DnfCharacterController {
-    private final DnfCharacterService dnfCharacterService;
+public class DnfDungeonController {
+    private final DnfDungeonService dnfDungeonService;
 
     @GetMapping("page")
     @Operation(summary = "分页")
@@ -46,39 +47,38 @@ public class DnfCharacterController {
             @Parameter(name = "dnf name", description = "dnf 角色名", in = ParameterIn.QUERY, ref = "String")
     })
     @RequiresPermissions("dnf:character:page")
-    public Result<PageData<DnfCharacterDto>> page(@Parameter(hidden = true) @RequestParam Map<String, Object> params) {
-        PageData<DnfCharacterDto> page = dnfCharacterService.page(params);
+    public Result<PageData<DnfDungeonDto>> page(@Parameter(hidden = true) @RequestParam Map<String, Object> params) {
+        PageData<DnfDungeonDto> page = dnfDungeonService.page(params);
 
-        return new Result<PageData<DnfCharacterDto>>().ok(page);
+        return new Result<PageData<DnfDungeonDto>>().ok(page);
     }
 
     @GetMapping("list")
     @Operation(summary = "列表")
     @RequiresPermissions("dnf:character:list")
-    public Result<List<DnfCharacterDto>> list() {
-        List<DnfCharacterDto> data = dnfCharacterService.list(new HashMap<>(1));
-
-        return new Result<List<DnfCharacterDto>>().ok(data);
+    public Result<List<DnfDungeonDto>> list() {
+        List<DnfDungeonDto> data = dnfDungeonService.list(new HashMap<>(1));
+        return new Result<List<DnfDungeonDto>>().ok(data);
     }
 
     @GetMapping("{id}")
     @Operation(summary = "信息")
     @RequiresPermissions("dnf:character:info")
-    public Result<DnfCharacterDto> get(@PathVariable("id") Long id) {
-        DnfCharacterDto data = dnfCharacterService.get(id);
+    public Result<DnfDungeonDto> get(@PathVariable("id") Long id) {
+        DnfDungeonDto data = dnfDungeonService.get(id);
 
-        return new Result<DnfCharacterDto>().ok(data);
+        return new Result<DnfDungeonDto>().ok(data);
     }
 
     @PostMapping
     @Operation(summary = "保存")
     @LogOperation("保存")
     @RequiresPermissions("dnf:character:save")
-    public Result save(@RequestBody DnfCharacterDto dto) {
+    public Result save(@RequestBody DnfDungeonDto dto) {
         //效验数据
         ValidatorUtils.validateEntity(dto, AddGroup.class, DefaultGroup.class);
 
-        dnfCharacterService.save(dto);
+        dnfDungeonService.save(dto);
 
         return new Result();
     }
@@ -87,11 +87,11 @@ public class DnfCharacterController {
     @Operation(summary = "修改")
     @LogOperation("修改")
     @RequiresPermissions("dnf:character:update")
-    public Result update(@RequestBody DnfCharacterDto dto) {
+    public Result update(@RequestBody DnfDungeonDto dto) {
         //效验数据
         ValidatorUtils.validateEntity(dto, UpdateGroup.class, DefaultGroup.class);
 
-        dnfCharacterService.update(dto);
+        dnfDungeonService.update(dto);
 
         return new Result();
     }
@@ -104,16 +104,16 @@ public class DnfCharacterController {
         //效验数据
         AssertUtils.isArrayEmpty(ids, "id");
 
-        dnfCharacterService.delete(ids);
+        dnfDungeonService.delete(ids);
 
         return new Result();
     }
 
-    @PostMapping("refreshSort")
-    @Operation(summary = "刷新fame排行")
-    @RequiresPermissions("dnf:character:update")
-    public Result<PageData<DnfCharacterDto>> refreshSort(@Parameter(hidden = true) @RequestParam Map<String, Object> params) {
-        dnfCharacterService.refresh();
-        return new Result();
+    @GetMapping("typeList")
+    @Operation(summary = "列表")
+    @RequiresPermissions("dnf:character:list")
+    public Result<List<DungeonTypeDto>> typeList() {
+        List<DungeonTypeDto> data = dnfDungeonService.typeList();
+        return new Result<List<DungeonTypeDto>>().ok(data);
     }
 }

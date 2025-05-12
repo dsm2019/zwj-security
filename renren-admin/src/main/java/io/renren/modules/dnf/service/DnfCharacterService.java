@@ -20,4 +20,6 @@ public interface DnfCharacterService extends BaseService<DnfCharacterEntity> {
     void update(DnfCharacterDto dto);
 
     void delete(Long[] ids);
+
+    void refresh();
 }

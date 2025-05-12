@@ -510,6 +510,7 @@ CREATE TABLE dnf_character (
                                name varchar(50) NOT NULL COMMENT '角色名字',
                                profession varchar(50) NOT NULL COMMENT '角色职业',
                                fame int COMMENT '角色名望',
+                               sort int COMMENT '名望排行',
                                simulated_damage int COMMENT '模拟伤害',
                                level int COMMENT '角色等级',
                                attack_speed int COMMENT '攻击速度',
@@ -545,3 +546,17 @@ CREATE TABLE dnf_history_attribute(
                                key idx_character_id (character_id),
                                key idx_record_date (record_date)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='历史属性表';
+
+CREATE TABLE dnf_dungeon(
+                                      id bigint NOT NULL COMMENT 'ID',
+                                      name varchar(50) NOT NULL COMMENT '地下城名字',
+                                      boss varchar(50) NOT NULL COMMENT '最终Boss',
+                                      type tinyint COMMENT '地下城类型，1:普通，2:征讨，3:军团，4:攻坚战',
+                                      parent_id bigint COMMENT '父地下城，军团本' DEFAULT 0,
+                                      creator bigint COMMENT '创建者',
+                                      create_date datetime COMMENT '创建时间',
+                                      updater bigint COMMENT '更新者',
+                                      update_date datetime COMMENT '更新时间',
+                                      primary key (id),
+                                      key idx_parent_id (parent_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='地下城表';
