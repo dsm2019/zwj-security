@@ -24,7 +24,7 @@
         <template v-slot="scope">
           <img
             v-if="scope.row.avatar"
-            :src="`/images/${scope.row.avatar}`"
+            :src="`${scope.row.avatar}`"
             alt="Avatar"
             class="avatar"
           />

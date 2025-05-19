@@ -86,8 +86,4 @@ public class DnfCharacterDto implements Serializable {
 
 	@Schema(title = "头像")
 	private String avatar;
-
-	public String getAvatar() {
-		return System.getProperty("user.dir") + avatar;
-	}
 }

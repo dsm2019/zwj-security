@@ -19,41 +19,28 @@ public class UploadServiceImpl implements UploadService {
 
     @Override
     public String upload(MultipartFile file, String filename) {
-        String prefix = System.getProperty("user.dir");
-        String path =  "/file/picture";
+        String path = System.getProperty("user.dir");
+        path = path + "/renren-ui/piblic/";
 
-        path = getFileName(path, filename, Objects.requireNonNull(file.getOriginalFilename()));
+        String fileName = getFileName(filename, Objects.requireNonNull(file.getOriginalFilename()));
 
         try {
-            file.transferTo(new java.io.File(prefix + path));
+            file.transferTo(new java.io.File(path + fileName));
         } catch (Exception e) {
             log.error("上传失败", e);
             return null;
         }
 
-        log.info("上传成功，文件路径：{}", path);
-        return path;
+        log.info("上传成功，文件路径：{}", path + fileName);
+        return fileName;
     }
 
 
-    private static String getFileName(String path, String filename, String originalFilename) {
+    private static String getFileName(String filename, String originalFilename) {
         String suffix = originalFilename.substring(originalFilename.lastIndexOf("."));
 
-//        if (StringUtils.isNoneBlank(filename)) {
-//            path = path + "/" + filename ;
-//            if (!new File(prefix + path + suffix).exists()) {
-//                return path + suffix;
-//            } else {
-//                for (int i = 1; i < 100; i++) {
-//                    if (!new File(path + "(" + i + ")" + suffix).exists()) {
-//                        return path + "(" + i + ")" + suffix;
-//                    }
-//                }
-//            }
-//        }
-
         String uuid = UUID.randomUUID().toString().replace("-", "");
-        return path + "/" + uuid + "-" + filename + suffix;
+        return "/upload/" + uuid + "-" + filename + suffix;
     }
 
 }

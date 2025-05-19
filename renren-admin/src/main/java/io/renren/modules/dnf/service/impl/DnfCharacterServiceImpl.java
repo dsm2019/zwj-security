@@ -128,13 +128,13 @@ public class DnfCharacterServiceImpl extends BaseServiceImpl<DnfCharacterDao, Dn
         if (!Objects.requireNonNull(file.getContentType()).startsWith("image/")) {
             return "文件类型不正确";
         }
-        String url = uploadService.upload(file, DnfCareerEnum.careerEnumMap.get(entity.getCareer()).getName());
-        if (url == null) {
+        String fileName = uploadService.upload(file, DnfCareerEnum.careerEnumMap.get(entity.getCareer()).getName());
+        if (fileName == null) {
             return "上传失败";
         }
-        entity.setAvatar(url);
+        entity.setAvatar(fileName);
         baseDao.updateById(entity);
-        return url;
+        return fileName;
     }
 
     @Override
