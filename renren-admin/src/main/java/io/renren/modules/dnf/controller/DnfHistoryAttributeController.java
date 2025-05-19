@@ -9,7 +9,6 @@ import io.renren.common.validator.ValidatorUtils;
 import io.renren.common.validator.group.AddGroup;
 import io.renren.common.validator.group.DefaultGroup;
 import io.renren.common.validator.group.UpdateGroup;
-import io.renren.modules.dnf.dto.DnfCharacterDto;
 import io.renren.modules.dnf.dto.DnfHistoryAttributeDto;
 import io.renren.modules.dnf.service.DnfHistoryAttributeService;
 import io.swagger.v3.oas.annotations.Operation;

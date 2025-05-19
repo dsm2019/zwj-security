@@ -9,6 +9,7 @@ import io.renren.common.validator.ValidatorUtils;
 import io.renren.common.validator.group.AddGroup;
 import io.renren.common.validator.group.DefaultGroup;
 import io.renren.common.validator.group.UpdateGroup;
+import io.renren.modules.dnf.dto.CareerDto;
 import io.renren.modules.dnf.dto.DnfCharacterDto;
 import io.renren.modules.dnf.service.DnfCharacterService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,6 +20,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
@@ -115,5 +117,23 @@ public class DnfCharacterController {
     public Result<PageData<DnfCharacterDto>> refreshSort(@Parameter(hidden = true) @RequestParam Map<String, Object> params) {
         dnfCharacterService.refresh();
         return new Result();
+    }
+
+    @PostMapping("{id}/avatar")
+    @Operation(summary = "上传头像")
+    @LogOperation("上传头像")
+    @RequiresPermissions("dnf:character:update")
+    public Result uploadAvatar(@RequestParam("file") MultipartFile file,
+                               @PathVariable Long id) {
+        String upload = dnfCharacterService.updateAvatar(id, file);
+        return new Result().ok(Map.of("fileUrl", upload));
+    }
+
+    @GetMapping("career/list")
+    @Operation(summary = "获取职业列表")
+    @RequiresPermissions("dnf:character:list")
+    public Result<List<CareerDto>> getCareerList() {
+        List<CareerDto> list = dnfCharacterService.getCareerList();
+        return new Result<List<CareerDto>>().ok(list);
     }
 }

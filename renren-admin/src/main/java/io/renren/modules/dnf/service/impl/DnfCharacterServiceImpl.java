@@ -8,18 +8,19 @@ import io.renren.common.page.PageData;
 import io.renren.common.service.impl.BaseServiceImpl;
 import io.renren.common.utils.ConvertUtils;
 import io.renren.modules.dnf.dao.DnfCharacterDao;
+import io.renren.modules.dnf.dto.CareerDto;
 import io.renren.modules.dnf.dto.DnfCharacterDto;
 import io.renren.modules.dnf.entity.DnfCharacterEntity;
+import io.renren.modules.dnf.enums.DnfCareerEnum;
 import io.renren.modules.dnf.service.DnfCharacterService;
+import io.renren.modules.dnf.service.UploadService;
 import io.renren.modules.sys.dto.SysUserDTO;
 import io.renren.modules.sys.service.SysUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,6 +28,8 @@ import java.util.stream.Collectors;
 public class DnfCharacterServiceImpl extends BaseServiceImpl<DnfCharacterDao, DnfCharacterEntity> implements DnfCharacterService {
 
     private final SysUserService sysUserService;
+
+    private final UploadService uploadService;
 
     @Override
     public PageData<DnfCharacterDto> page(Map<String, Object> params) {
@@ -108,5 +111,61 @@ public class DnfCharacterServiceImpl extends BaseServiceImpl<DnfCharacterDao, Dn
             dto.setSort(i + 1);
             update(dto);
         }
+    }
+
+    @Override
+    public String updateAvatar(Long id, MultipartFile file) {
+        DnfCharacterEntity entity = baseDao.selectById(id);
+        if (entity == null) {
+            return "角色不存在";
+        }
+        if (file == null || file.isEmpty()) {
+            return "文件不能为空";
+        }
+        if (file.getSize() > 1024 * 1024 * 2) {
+            return "文件大小不能超过2MB";
+        }
+        if (!Objects.requireNonNull(file.getContentType()).startsWith("image/")) {
+            return "文件类型不正确";
+        }
+        String url = uploadService.upload(file, DnfCareerEnum.careerEnumMap.get(entity.getCareer()).getName());
+        if (url == null) {
+            return "上传失败";
+        }
+        entity.setAvatar(url);
+        baseDao.updateById(entity);
+        return url;
+    }
+
+    @Override
+    public List<CareerDto> getCareerList() {
+        // Convert all enum values to CareerDto
+        List<CareerDto> allCareers = Arrays.stream(DnfCareerEnum.values())
+                .map(careerEnum -> {
+                    CareerDto dto = new CareerDto();
+                    dto.setCareer(careerEnum.getCareer());
+                    dto.setName(careerEnum.getName());
+                    dto.setId(careerEnum.getId());
+                    dto.setParent(careerEnum.getParent());
+                    dto.setAvatar(careerEnum.getAvatar());
+                    return dto;
+                })
+                .toList();
+
+        // Map to group careers by their parent ID
+        Map<Integer, List<CareerDto>> groupedByParent = allCareers.stream()
+                .collect(Collectors.groupingBy(CareerDto::getParent));
+
+        // Build the hierarchical structure
+        List<CareerDto> rootCareers = groupedByParent.getOrDefault(0, List.of());
+        rootCareers.forEach(root -> buildHierarchy(root, groupedByParent));
+
+        return rootCareers;
+    }
+
+    private void buildHierarchy(CareerDto parent, Map<Integer, List<CareerDto>> groupedByParent) {
+        List<CareerDto> children = groupedByParent.getOrDefault(parent.getId(), List.of());
+        parent.setChildren(children);
+        children.forEach(child -> buildHierarchy(child, groupedByParent));
     }
 }

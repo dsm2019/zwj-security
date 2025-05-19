@@ -509,6 +509,8 @@ CREATE TABLE dnf_character (
                                id bigint NOT NULL COMMENT '角色ID',
                                name varchar(50) NOT NULL COMMENT '角色名字',
                                profession varchar(50) NOT NULL COMMENT '角色职业',
+                               career           int          default 0  not null comment '职业id',
+                               avatar           varchar(255) default '' null comment '头像',
                                fame int COMMENT '角色名望',
                                sort int COMMENT '名望排行',
                                simulated_damage int COMMENT '模拟伤害',

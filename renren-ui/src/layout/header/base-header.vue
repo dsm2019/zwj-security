@@ -12,13 +12,14 @@ import Expand from "./expand.vue";
 import HeaderMixNavMenus from "./header-mix-nav-menus.vue";
 import Logo from "./logo.vue";
 import "@/assets/css/header.less";
+import { RefreshRight } from "@element-plus/icons-vue";
 
 /**
  * 顶部主区域
  */
 export default defineComponent({
   name: "Header",
-  components: { BaseSidebar, Breadcrumb, CollapseSidebarBtn, Expand, HeaderMixNavMenus, Logo },
+  components: { RefreshRight, BaseSidebar, Breadcrumb, CollapseSidebarBtn, Expand, HeaderMixNavMenus, Logo },
   setup() {
     const store = useAppStore();
     const state = reactive({
@@ -37,7 +38,7 @@ export default defineComponent({
 <template>
   <div class="rr-header-ctx">
     <div class="rr-header-ctx-logo hidden-xs-only">
-      <logo :logoUrl="logo" logoName="人人权限系统"></logo>
+      <logo :logoUrl="logo" logoName="带你飞系统"></logo>
     </div>
     <div class="rr-header-right">
       <div class="rr-header-right-left">

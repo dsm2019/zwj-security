@@ -43,6 +43,10 @@ public class Result<T> implements Serializable {
         return this;
     }
 
+    public Result<T> ok() {
+        return this;
+    }
+
     public boolean success(){
         return code == 0;
     }

@@ -2,7 +2,7 @@
   <div class="rr-login">
     <div class="rr-login-wrap">
       <div class="rr-login-left hidden-sm-and-down">
-        <p class="rr-login-left-title">人人权限系统</p>
+        <p class="rr-login-left-title">带你飞系统</p>
       </div>
 
       <div class="rr-login-right">

@@ -15,11 +15,13 @@ import java.util.Date;
 public class DnfCharacterEntity extends BaseEntity {
     private String name;
     private String profession;
+    private Integer career;
     private Integer fame;
     private Integer simulatedDamage;
     private Integer level;
     private Integer attackSpeed;
     private Integer movementSpeed;
+    private String avatar;
 
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Long updater;

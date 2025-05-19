@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.renren.common.validator.group.AddGroup;
 import io.renren.common.validator.group.DefaultGroup;
 import io.renren.common.validator.group.UpdateGroup;
+import io.renren.modules.dnf.enums.DnfCareerEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -20,6 +21,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Optional;
 
 /**
  * 角色管理
@@ -43,6 +45,16 @@ public class DnfCharacterDto implements Serializable {
 
 	@Schema(title = "职业")
 	private String profession;
+
+	@Schema(title = "职业id")
+	private Integer career;
+
+	@Schema(title = "职业名称")
+	private String careerName;
+
+	public String getCareerName() {
+		return Optional.of(DnfCareerEnum.careerEnumMap.get(career)).orElse(DnfCareerEnum.UNKNOWN).getName();
+	}
 
 	@Schema(title = "名望")
 	private Integer fame;
@@ -71,4 +83,11 @@ public class DnfCharacterDto implements Serializable {
 
 	@Schema(title = "用户名称")
 	private String userName;
+
+	@Schema(title = "头像")
+	private String avatar;
+
+	public String getAvatar() {
+		return System.getProperty("user.dir") + avatar;
+	}
 }
