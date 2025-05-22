@@ -10,7 +10,10 @@ package io.renren.common.utils;
 
 import io.renren.common.exception.ErrorCode;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -19,8 +22,11 @@ import java.io.Serializable;
  * @author Mark sunlightcs@gmail.com
  * @since 1.0.0
  */
+@Setter
+@Getter
 @Schema(title = "响应")
 public class Result<T> implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
     /**
      * 编码：0表示成功，其他值表示失败
@@ -75,27 +81,4 @@ public class Result<T> implements Serializable {
         return this;
     }
 
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
-
-    public T getData() {
-        return data;
-    }
-
-    public void setData(T data) {
-        this.data = data;
-    }
 }

@@ -1,23 +1,16 @@
-package io.renren.modules.dnf.service.impl;
+package io.renren.modules.upload;
 
-import io.renren.modules.dnf.service.UploadService;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.util.Objects;
 import java.util.UUID;
 
-@Slf4j
 @Service
-@AllArgsConstructor
-public class UploadServiceImpl implements UploadService {
+@Slf4j
+public class UploadService {
 
-
-    @Override
     public String upload(MultipartFile file, String filename) {
         String path = System.getProperty("user.dir");
         path = path + "/renren-ui/piblic/";

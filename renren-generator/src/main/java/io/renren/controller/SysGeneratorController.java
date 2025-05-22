@@ -8,18 +8,18 @@
 
 package io.renren.controller;
 
-import cn.hutool.core.io.IoUtil;
 import io.renren.service.SysGeneratorService;
 import io.renren.utils.PageUtils;
 import io.renren.utils.Query;
 import io.renren.utils.R;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Map;
 
@@ -28,7 +28,7 @@ import java.util.Map;
  *
  * @author Mark sunlightcs@gmail.com
  */
-@Controller
+@RestController
 @RequestMapping("/sys/generator")
 public class SysGeneratorController {
     @Resource
@@ -37,8 +37,7 @@ public class SysGeneratorController {
     /**
      * 列表
      */
-    @ResponseBody
-    @RequestMapping("/list")
+    @GetMapping("/list")
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils pageUtil = sysGeneratorService.queryList(new Query(params));
 
@@ -48,15 +47,37 @@ public class SysGeneratorController {
     /**
      * 生成代码
      */
-    @RequestMapping("/code")
-    public void code(String tables, HttpServletResponse response) throws IOException {
+    @GetMapping("/code")
+    public R code(@RequestParam String tables) throws IOException {
         byte[] data = sysGeneratorService.generatorCode(tables.split(","));
 
-        response.reset();
-        response.setHeader("Content-Disposition", "attachment; filename=\"renren.zip\"");
-        response.addHeader("Content-Length", "" + data.length);
-        response.setContentType("application/octet-stream; charset=UTF-8");
+//        response.reset();
+//        response.setHeader("Content-Disposition", "attachment; filename=\"renren.zip\"");
+//        response.addHeader("Content-Length", "" + data.length);
+//        response.setContentType("application/octet-stream; charset=UTF-8");
+//
+//        IoUtil.write(response.getOutputStream(), false, data);
 
-        IoUtil.write(response.getOutputStream(), false, data);
+        // 获取当前工作目录
+        String path = System.getProperty("user.dir");
+        // 拼接代码存储路径
+        path = path + "/renren-generator/src/main/java/code";
+
+        // 创建文件对象
+        File directory = new File(path);
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+
+        File outputFile = new File(directory, "renren.zip");
+        try (FileOutputStream fos = new FileOutputStream(outputFile)) {
+            fos.write(data);
+            System.out.println("文件已保存到: " + outputFile.getAbsolutePath());
+        } catch (IOException e) {
+            e.printStackTrace();
+            return R.error();
+        }
+
+        return R.ok();
     }
 }

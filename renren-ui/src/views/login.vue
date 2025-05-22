@@ -1,23 +1,48 @@
 <template>
   <div class="rr-login">
+    <!-- 宇宙飞船元素 -->
+    <div class="spaceship spaceship1"></div>
+    <div class="spaceship spaceship2"></div>
+    <div class="spaceship spaceship3"></div>
     <div class="rr-login-wrap">
-      <div class="rr-login-left hidden-sm-and-down">
-        <p class="rr-login-left-title">带你飞系统</p>
+      <div class="rr-login-top hidden-sm-and-down">
+        <p class="rr-login-top-title">带你飞系统</p>
       </div>
 
-      <div class="rr-login-right">
-        <div class="rr-login-right-main">
-          <h4 class="rr-login-right-main-title">登录</h4>
+      <div class="rr-login-bottom">
+        <div class="rr-login-bottom-main">
+          <h4 class="rr-login-bottom-main-title">登录</h4>
           <el-form ref="formRef" label-width="80px" :status-icon="true" :model="login" :rules="rules" @keyup.enter="onLogin">
             <el-form-item label-width="0" prop="username">
-              <el-input v-model="login.username" placeholder="用户名" prefix-icon="user" autocomplete="off"></el-input>
+              <el-input 
+                v-model="login.username" 
+                placeholder="用户名" 
+                prefix-icon="user" 
+                autocomplete="off"
+                @focus="handleInputFocus('username')"
+                @click="handleInputClick('username')"
+              ></el-input>
             </el-form-item>
             <el-form-item label-width="0" prop="password">
-              <el-input placeholder="密码" v-model="login.password" prefix-icon="lock" autocomplete="off" show-password></el-input>
+              <el-input 
+                placeholder="密码" 
+                v-model="login.password" 
+                prefix-icon="lock" 
+                autocomplete="off" 
+                show-password
+                @focus="handleInputFocus('password')"
+                @click="handleInputClick('password')"
+              ></el-input>
             </el-form-item>
             <el-form-item label-width="0" prop="captcha">
-              <el-space class="rr-login-right-main-code">
-                <el-input v-model="login.captcha" placeholder="验证码" prefix-icon="first-aid-kit"></el-input>
+              <el-space class="rr-login-bottom-main-code">
+                <el-input 
+                  v-model="login.captcha" 
+                  placeholder="验证码" 
+                  prefix-icon="first-aid-kit"
+                  @focus="handleInputFocus('captcha')"
+                  @click="handleInputClick('captcha')"
+                ></el-input>
                 <img style="vertical-align: middle; height: 40px; cursor: pointer" :src="state.captchaUrl" @click="onRefreshCode" alt="" />
               </el-space>
             </el-form-item>
@@ -110,165 +135,182 @@ const onLogin = () => {
     }
   });
 };
+
+// 添加调试方法
+const handleInputFocus = (field: string) => {
+  console.log(`输入框 ${field} 获得焦点`);
+};
+
+const handleInputClick = (field: string) => {
+  console.log(`点击了输入框 ${field}`);
+};
 </script>
 
 <style lang="less" scoped>
 @import url("@/assets/theme/base.less");
+
 .rr-login {
   width: 100vw;
   height: 100vh;
-  background: #019ec4;
+  background: #000; /* 星空背景通常为黑色 */
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+}
 
-  @media only screen and (max-width: 992px) {
-    .rr-login-wrap {
-      width: 96% !important;
-    }
-    .rr-login-right {
-      width: 100% !important;
-    }
+/* 宇宙飞船通用样式 */
+.spaceship {
+  position: absolute;
+  width: 50px; /* 飞船大小 */
+  height: 50px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50"><path d="M25 0 L50 50 H0 Z" fill="%23fff"/></svg>'); /* 简单的三角形飞船 */
+  background-size: contain;
+  background-repeat: no-repeat;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+/* 第一架飞船动画 */
+.spaceship1 {
+  top: 10%;
+  left: -50px;
+  animation-name: fly1;
+  animation-duration: 15s;
+}
+
+@keyframes fly1 {
+  from {
+    transform: translateX(-50px);
   }
-
-  &-wrap {
-    margin: 0 auto;
-    width: 1000px;
-    box-shadow: -4px 5px 10px rgba(0, 0, 0, 0.4);
-    animation-duration: 1s;
-    animation-fill-mode: both;
-    border-radius: 5px;
-    overflow: hidden;
+  to {
+    transform: translateX(calc(100vw + 50px));
   }
+}
 
-  &-left {
-    justify-content: center;
-    flex-direction: column;
-    background-color: @--color-primary;
-    color: #fff;
-    float: left;
-    width: 50%;
+/* 第二架飞船动画 */
+.spaceship2 {
+  top: 50%;
+  left: -50px;
+  animation-name: fly2;
+  animation-duration: 20s;
+  animation-delay: 5s; /* 延迟 5 秒出发 */
+}
 
-    &-title {
-      text-align: center;
-      color: #fff;
-      font-weight: 300;
-      letter-spacing: 2px;
-      font-size: 32px;
-    }
+@keyframes fly2 {
+  from {
+    transform: translateX(-50px) rotate(10deg);
   }
-
-  &-right {
-    border-left: none;
-    color: #fff;
-    background-color: #fff;
-    width: 50%;
-    float: left;
-
-    &-main {
-      margin: 0 auto;
-      width: 65%;
-      &-title {
-        color: #333;
-        margin-bottom: 40px;
-        font-weight: 500;
-        font-size: 24px;
-        text-align: center;
-        letter-spacing: 4px;
-      }
-
-      &-lang .iconfont {
-        font-size: 20px;
-        color: #606266;
-        font-weight: 800;
-        width: 20px;
-        height: 20px;
-      }
-
-      .el-input__inner {
-        border-width: 0;
-        border-radius: 0;
-        border-bottom: 1px solid #dcdfe6;
-      }
-
-      &-code {
-        width: 100%;
-        .el-space__item:first-child {
-          flex: 1;
-        }
-      }
-      &-btn {
-        width: 100%;
-        height: 45px;
-        font-size: 18px !important;
-        letter-spacing: 2px;
-        font-weight: 300 !important;
-        cursor: pointer;
-        margin-top: 30px;
-        font-family: neo, sans-serif;
-        transition: 0.25s;
-      }
-    }
+  to {
+    transform: translateX(calc(100vw + 50px)) rotate(10deg);
   }
+}
 
-  .login-footer {
-    text-align: center;
-    position: absolute;
-    bottom: 0;
-    padding: 20px;
-    color: rgba(255, 255, 255, 0.6);
-    p {
-      margin: 10px 0;
-    }
-    a {
-      padding: 0 5px;
-      color: rgba(255, 255, 255, 0.6);
-      &:focus,
-      &:hover {
-        color: #fff;
-      }
-    }
-  }
+/* 第三架飞船动画 */
+.spaceship3 {
+  top: 90%;
+  left: -50px;
+  animation-name: fly3;
+  animation-duration: 25s;
+  animation-delay: 10s; /* 延迟 10 秒出发 */
+}
 
-  &-left,
-  &-right {
-    position: relative;
-    min-height: 500px;
-    align-items: center;
-    display: flex;
+@keyframes fly3 {
+  from {
+    transform: translateX(-50px) rotate(-10deg);
   }
+  to {
+    transform: translateX(calc(100vw + 50px)) rotate(-10deg);
+  }
+}
 
-  @keyframes animate-down {
-    0%,
-    60%,
-    75%,
-    90%,
-    to {
-      animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-    }
-    0% {
-      opacity: 0;
-      transform: translate3d(0, -3000px, 0);
-    }
-    60% {
-      opacity: 1;
-      transform: translate3d(0, 25px, 0);
-    }
-    75% {
-      transform: translate3d(0, -10px, 0);
-    }
-    90% {
-      transform: translate3d(0, 5px, 0);
-    }
-    to {
-      transform: none;
-    }
-  }
+.rr-login-wrap {
+  width: 380px;
+  background: #fff;
+  border-radius: 8px;
+  padding: 30px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+}
 
-  .animate-down {
-    animation-name: animate-down;
-  }
+.rr-login-top-title {
+  color: #333;
+  text-align: center;
+  font-size: 28px;
+  margin-bottom: 30px;
+}
+
+.rr-login-bottom-main-title {
+  color: #333;
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 30px;
+}
+
+.rr-login-bottom-main .el-form-item {
+  margin-bottom: 25px;
+}
+
+.rr-login-bottom-main .el-input__inner {
+  border: 1px solid #dcdfe6;
+  border-radius: 4px;
+  color: #606266;
+  height: 40px;
+  padding: 0 15px;
+  transition: border-color 0.3s ease;
+}
+
+.rr-login-bottom-main .el-input__inner:focus {
+  border-color: #409EFF;
+  outline: none;
+}
+
+.rr-login-bottom-main .el-input__prefix {
+  color: #909399;
+}
+
+.rr-login-bottom-main-code {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.rr-login-bottom-main-code img {
+  height: 40px;
+  border: 1px solid #dcdfe6;
+  border-radius: 4px;
+}
+
+.rr-login-right-main-btn {
+  width: 100%;
+  height: 40px;
+  background: #409EFF;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.rr-login-right-main-btn:hover {
+  background: #66b1ff;
+}
+
+.login-footer {
+  position: absolute;
+  bottom: 20px;
+  color: #909399;
+  text-align: center;
+}
+
+.login-footer a {
+  color: #909399;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.login-footer a:hover {
+  color: #409EFF;
 }
 </style>

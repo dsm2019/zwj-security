@@ -2,21 +2,17 @@ package io.renren.modules.dnf.controller;
 
 import io.renren.common.annotation.LogOperation;
 import io.renren.common.utils.Result;
-import io.renren.modules.dnf.service.UploadService;
+import io.renren.modules.upload.UploadService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/dnf/upload")
@@ -30,9 +26,9 @@ public class UploadController {
     @Operation(summary = "上传文件")
     @LogOperation("上传文件")
 //    @RequiresPermissions("dnf:character:save")
-    public Result upload(@RequestParam("file") MultipartFile file,
+    public Result<?> upload(@RequestParam("file") MultipartFile file,
                          @RequestParam(required = false) String filename) {
         String upload = uploadService.upload(file, filename);
-        return new Result().ok(Map.of("fileUrl", upload));
+        return new Result<>().ok(Map.of("fileUrl", upload));
     }
 }

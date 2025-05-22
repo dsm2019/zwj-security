@@ -562,3 +562,36 @@ CREATE TABLE dnf_dungeon(
                                       primary key (id),
                                       key idx_parent_id (parent_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='地下城表';
+
+-- 创建角色信息表
+CREATE TABLE IF NOT EXISTS dnf_character_info (
+                                              id BIGINT PRIMARY KEY COMMENT '主键 ID',
+                                              guild_name VARCHAR(255) COMMENT '冒险团名称',
+                                              name VARCHAR(255) COMMENT '角色名称',
+                                              job VARCHAR(255) COMMENT '职业',
+                                              fame INT COMMENT '冒险家名望',
+                                              hp INT COMMENT '生命',
+                                              mp INT COMMENT '魔法',
+                                              physical_defense_rate DOUBLE COMMENT '物理防御率',
+                                              magic_defense_rate DOUBLE COMMENT '魔法防御率',
+                                              strength INT COMMENT '力量',
+                                              intelligence INT COMMENT '智力',
+                                              stamina INT COMMENT '体力',
+                                              spirit INT COMMENT '精神',
+                                              physical_attack INT COMMENT '物理攻击',
+                                              magic_attack INT COMMENT '魔法攻击',
+                                              independent_attack INT COMMENT '独立攻击',
+                                              physical_crit_rate DOUBLE COMMENT '物理暴击率',
+                                              magic_crit_rate DOUBLE COMMENT '魔法暴击率',
+                                              attack_speed DOUBLE COMMENT '攻击速度',
+                                              cast_speed DOUBLE COMMENT '施放速度',
+                                              move_speed DOUBLE COMMENT '移动速度',
+                                              fire INT COMMENT '火属性强化',
+                                              ice INT COMMENT '冰属性强化',
+                                              light INT COMMENT '光属性强化',
+                                              dark INT COMMENT '暗属性强化',
+                                              creator BIGINT COMMENT '创建者',
+                                              create_date DATETIME COMMENT '创建时间',
+                                              updater BIGINT COMMENT '更新者',
+                                              update_date DATETIME COMMENT '更新时间'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='角色信息表';

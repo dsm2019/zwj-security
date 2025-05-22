@@ -8,7 +8,7 @@
 
 	<parent>
 		<groupId>io.renren</groupId>
-		<artifactId>renren-security</artifactId>
+		<artifactId>zwj-security</artifactId>
 		<version>5.4.0</version>
 	</parent>
 
