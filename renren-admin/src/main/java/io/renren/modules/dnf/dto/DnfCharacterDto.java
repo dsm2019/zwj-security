@@ -53,7 +53,7 @@ public class DnfCharacterDto implements Serializable {
 	private String careerName;
 
 	public String getCareerName() {
-		return Optional.of(DnfCareerEnum.careerEnumMap.get(career)).orElse(DnfCareerEnum.UNKNOWN).getName();
+		return Optional.ofNullable(DnfCareerEnum.careerEnumMap.get(career)).orElse(DnfCareerEnum.UNKNOWN).getName();
 	}
 
 	@Schema(title = "名望")

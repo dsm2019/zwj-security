@@ -49,9 +49,9 @@
           <span>{{ scope.row.damagePerFame || 0 }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="level" label="等级" sortable="custom" header-align="center" align="center"></el-table-column>
-      <el-table-column prop="attackSpeed" label="攻击速度" sortable="custom" header-align="center" align="center"></el-table-column>
-      <el-table-column prop="movementSpeed" label="移动速度" sortable="custom" header-align="center" align="center"></el-table-column>
+<!--      <el-table-column prop="level" label="等级" sortable="custom" header-align="center" align="center"></el-table-column>-->
+<!--      <el-table-column prop="attackSpeed" label="攻击速度" sortable="custom" header-align="center" align="center"></el-table-column>-->
+<!--      <el-table-column prop="movementSpeed" label="移动速度" sortable="custom" header-align="center" align="center"></el-table-column>-->
       <el-table-column prop="userName" label="用户" sortable="custom" header-align="center" align="center"></el-table-column>
       <el-table-column prop="createDate" label="创建时间" sortable="custom" header-align="center" align="center" width="180"></el-table-column>
       <el-table-column label="操作" fixed="right" header-align="center" align="center" width="150">

@@ -64,22 +64,22 @@ public class DnfHistoryAttributeServiceImpl extends BaseServiceImpl<DnfHistoryAt
     public void save(DnfHistoryAttributeDto dto) {
         fillDate(dto);
         DnfHistoryAttributeEntity oldEntity = findBy(dto.getCharacterId(), dto.getRecordDate());
+
+        DnfCharacterDto dnfCharacterDto = dnfCharacterService.get(dto.getCharacterId());
+
         if (Objects.nonNull(oldEntity)) {
             dto.setId(oldEntity.getId());
             DnfHistoryAttributeEntity entity = ConvertUtils.sourceToTarget(dto, DnfHistoryAttributeEntity.class);
             updateById(entity);
-            return;
+        } else {
+            dto.setCharacterName(dnfCharacterDto.getName());
+            DnfHistoryAttributeEntity entity = ConvertUtils.sourceToTarget(dto, DnfHistoryAttributeEntity.class);
+            insert(entity);
         }
-
-        DnfCharacterDto dnfCharacterDto = dnfCharacterService.get(dto.getCharacterId());
-
-        dto.setCharacterName(dnfCharacterDto.getName());
-        DnfHistoryAttributeEntity entity = ConvertUtils.sourceToTarget(dto, DnfHistoryAttributeEntity.class);
-        insert(entity);
 
         dnfCharacterDto.setFame(dto.getFame());
         dnfCharacterDto.setSimulatedDamage(dto.getSimulatedDamage());
-        dnfCharacterService.save(dnfCharacterDto);
+        dnfCharacterService.update(dnfCharacterDto);
     }
 
     private DnfHistoryAttributeEntity findBy(Long characterId, String recordDate) {
