@@ -106,40 +106,6 @@ const uploadAvatarHandle = (id: number) => {
   });
 };
 
-
-// const uploadAvatarHandle = async (id: number) => {
-//   const fileInput = document.createElement('input');
-//   fileInput.type = 'file';
-//   fileInput.accept = 'image/*';
-//   fileInput.onchange = async (event: Event) => {
-//     const file = (event.target as HTMLInputElement).files?.[0];
-//     if (!file) return;
-//
-//     if (file.size > 2 * 1024 * 1024) {
-//       ElMessage.error('文件大小不能超过2MB');
-//       return;
-//     }
-//
-//     const formData = new FormData();
-//     formData.append('file', file);
-//
-//     try {
-//       const response = await baseService.post(`/dnf/character/${id}/avatar`, formData, {
-//         headers: { 'Content-Type': 'multipart/form-data' },
-//       });
-//       if (response) {
-//         ElMessage.success('头像上传成功');
-//         state.getDataList(); // Refresh the data list
-//       }
-//     } catch (error) {
-//       console.error('头像上传失败:', error);
-//       ElMessage.error('头像上传失败，请稍后重试');
-//     }
-//   };
-//   fileInput.click();
-// };
-
-
 // 计算百分比和伤害除以名望的方法
 const calculatePercentagesAndDamagePerFame = (list) => {
   if (!list || list.length === 0) return;
