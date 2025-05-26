@@ -3,6 +3,7 @@ package io.renren.modules.dnf.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.renren.common.validator.group.AddGroup;
 import io.renren.common.validator.group.UpdateGroup;
+import io.renren.modules.dnf.enums.DungeonPeriodEnum;
 import io.renren.modules.dnf.enums.DungeonsTypeEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
@@ -35,6 +36,13 @@ public class DnfDungeonDto implements Serializable {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String typeName;
 
+    @Schema(title = "周期")
+    private Integer period;
+
+    @Schema(title = "周期名")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String periodName;
+
     @Schema(title = "军团父id")
     private Long parentId = 0L;
 
@@ -53,4 +61,10 @@ public class DnfDungeonDto implements Serializable {
     public boolean isLegion() {
         return DungeonsTypeEnum.LEGION.getCode() == type;
     }
+
+//    @Schema(title = "周期名")
+//    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+//    public String getPeriodName() {
+//        return DungeonPeriodEnum.map.get(period);
+//    }
 }

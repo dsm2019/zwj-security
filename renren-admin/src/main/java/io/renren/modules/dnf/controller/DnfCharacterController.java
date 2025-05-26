@@ -50,7 +50,6 @@ public class DnfCharacterController {
     @RequiresPermissions("dnf:character:page")
     public Result<PageData<DnfCharacterDto>> page(@Parameter(hidden = true) @RequestParam Map<String, Object> params) {
         PageData<DnfCharacterDto> page = dnfCharacterService.page(params);
-
         return new Result<PageData<DnfCharacterDto>>().ok(page);
     }
 

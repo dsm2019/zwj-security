@@ -9,8 +9,10 @@ import io.renren.common.service.impl.BaseServiceImpl;
 import io.renren.common.utils.ConvertUtils;
 import io.renren.modules.dnf.dao.DnfDungeonDao;
 import io.renren.modules.dnf.dto.DnfDungeonDto;
+import io.renren.modules.dnf.dto.DungeonPeriodDto;
 import io.renren.modules.dnf.dto.DungeonTypeDto;
 import io.renren.modules.dnf.entity.DnfDungeonEntity;
+import io.renren.modules.dnf.enums.DungeonPeriodEnum;
 import io.renren.modules.dnf.enums.DungeonsTypeEnum;
 import io.renren.modules.dnf.service.DnfDungeonService;
 import lombok.AllArgsConstructor;
@@ -54,6 +56,7 @@ public class DnfDungeonServiceImpl extends BaseServiceImpl<DnfDungeonDao, DnfDun
 
     private void buildDungeon(DnfDungeonDto dto) {
         dto.setTypeName(getByCode(dto.getType()).getName());
+        dto.setPeriodName(DungeonPeriodEnum.map.get(dto.getPeriod()));
 
         if (dto.isLegion() && dto.isParent()) {
             List<DnfDungeonDto> children = list(Map.of("parent_id", dto.getId()));
@@ -92,7 +95,22 @@ public class DnfDungeonServiceImpl extends BaseServiceImpl<DnfDungeonDao, DnfDun
 
     @Override
     public List<DungeonTypeDto> typeList() {
-        return Arrays.stream(DungeonsTypeEnum.values()).map(DnfDungeonServiceImpl::convertType).toList();
+        return Arrays.stream(DungeonsTypeEnum.values())
+                .filter(x -> !DungeonsTypeEnum.UNKNOWN.equals(x))
+                .map(DnfDungeonServiceImpl::convertType)
+                .toList();
+    }
+
+    @Override
+    public List<DungeonPeriodDto> periodList() {
+        return Arrays.stream(DungeonPeriodEnum.values())
+                .map(x -> {
+                    DungeonPeriodDto dto = new DungeonPeriodDto();
+                    dto.setPeriod(x.getPeriod());
+                    dto.setDescription(x.getDescription());
+                    return dto;
+                })
+                .toList();
     }
 
     private static DungeonTypeDto convertType(DungeonsTypeEnum type) {

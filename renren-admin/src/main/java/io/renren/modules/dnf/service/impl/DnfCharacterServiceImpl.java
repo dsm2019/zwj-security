@@ -141,6 +141,7 @@ public class DnfCharacterServiceImpl extends BaseServiceImpl<DnfCharacterDao, Dn
     public List<CareerDto> getCareerList() {
         // Convert all enum values to CareerDto
         List<CareerDto> allCareers = Arrays.stream(DnfCareerEnum.values())
+                .filter(entity -> !DnfCareerEnum.UNKNOWN.equals(entity))
                 .map(careerEnum -> {
                     CareerDto dto = new CareerDto();
                     dto.setCareer(careerEnum.getCareer());

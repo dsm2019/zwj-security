@@ -3,6 +3,7 @@ package io.renren.modules.dnf.service;
 import io.renren.common.page.PageData;
 import io.renren.common.service.BaseService;
 import io.renren.modules.dnf.dto.DnfDungeonDto;
+import io.renren.modules.dnf.dto.DungeonPeriodDto;
 import io.renren.modules.dnf.dto.DungeonTypeDto;
 import io.renren.modules.dnf.entity.DnfDungeonEntity;
 
@@ -23,4 +24,6 @@ public interface DnfDungeonService extends BaseService<DnfDungeonEntity> {
     void delete(Long[] ids);
 
     List<DungeonTypeDto> typeList();
+
+    List<DungeonPeriodDto> periodList();
 }
