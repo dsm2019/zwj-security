@@ -161,4 +161,13 @@ public class DnfHistoryAttributeServiceImpl extends BaseServiceImpl<DnfHistoryAt
     public void delete(Long[] ids) {
         baseDao.deleteBatchIds(Arrays.asList(ids));
     }
+
+    @Override
+    public void refreshRanking() {
+        List<DnfHistoryAttributeEntity> attributeEntities = baseDao.selectList(new QueryWrapper<>());
+        Map<String, List<DnfHistoryAttributeEntity>> collect = attributeEntities.stream().collect(Collectors.groupingBy(DnfHistoryAttributeEntity::getRecordDate));
+        for (Map.Entry<String, List<DnfHistoryAttributeEntity>> entry : collect.entrySet()) {
+
+        }
+    }
 }

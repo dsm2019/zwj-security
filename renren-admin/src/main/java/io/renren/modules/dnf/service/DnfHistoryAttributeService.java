@@ -23,4 +23,6 @@ public interface DnfHistoryAttributeService extends BaseService<DnfHistoryAttrib
     void update(DnfHistoryAttributeDto dto);
 
     void delete(Long[] ids);
+
+    void refreshRanking();
 }

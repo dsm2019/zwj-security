@@ -119,4 +119,15 @@ public class DnfHistoryAttributeController {
 
         return new Result();
     }
+
+    @PostMapping
+    @Operation(summary = "刷新排名")
+    @LogOperation("删除")
+    @RequiresPermissions("dnf:character:delete")
+    public Result<?> refreshRanking() {
+
+        dnfHistoryAttributeService.refreshRanking();
+
+        return new Result<>();
+    }
 }

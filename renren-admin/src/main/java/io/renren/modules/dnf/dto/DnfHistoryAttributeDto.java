@@ -32,8 +32,14 @@ public class DnfHistoryAttributeDto implements Serializable {
     @Schema(title = "名望")
     private Integer fame;
 
+    @Schema(title = "名望排名")
+    private Integer fameRanking;
+
     @Schema(title = "模拟伤害")
     private Integer simulatedDamage;
+
+    @Schema(title = "模拟伤害排名")
+    private Integer simulatedDamageRanking;
 
     @Schema(title = "日期")
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
