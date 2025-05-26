@@ -47,9 +47,10 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> implements Bas
 
     /**
      * 获取分页对象
-     * @param params      分页查询参数
-     * @param defaultOrderField  默认排序字段
-     * @param isAsc              排序方式
+     *
+     * @param params            分页查询参数
+     * @param defaultOrderField 默认排序字段
+     * @param isAsc             排序方式
      */
     protected IPage<T> getPage(Map<String, Object> params, String defaultOrderField, boolean isAsc) {
         //分页参数
@@ -206,6 +207,12 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> implements Bas
     public T selectById(Serializable id) {
         return baseDao.selectById(id);
     }
+
+    @Override
+    public List<T> listByIds(Collection<? extends Serializable> ids) {
+        return baseDao.selectBatchIds(ids);
+    }
+
 
     @Override
     public boolean deleteById(Serializable id) {

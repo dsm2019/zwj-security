@@ -25,7 +25,7 @@ public class DnfCompletionRecordEntity extends BaseTEntity {
      */
     private String completionPeriod;
     /**
-     * 完成的时间(毫秒)
+     * 完成的时间(毫秒*10)
      */
     private Integer completionTime;
 

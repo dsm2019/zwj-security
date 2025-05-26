@@ -10,6 +10,7 @@ import io.renren.common.validator.group.AddGroup;
 import io.renren.common.validator.group.DefaultGroup;
 import io.renren.common.validator.group.UpdateGroup;
 import io.renren.modules.dnf.dto.DnfHistoryAttributeDto;
+import io.renren.modules.dnf.dto.TrendDataDto;
 import io.renren.modules.dnf.service.DnfHistoryAttributeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -59,6 +60,16 @@ public class DnfHistoryAttributeController {
         List<DnfHistoryAttributeDto> data = dnfHistoryAttributeService.list(new HashMap<>(1));
 
         return new Result<List<DnfHistoryAttributeDto>>().ok(data);
+    }
+
+    @GetMapping("trend")
+    @Operation(summary = "属性趋势")
+    @RequiresPermissions("dnf:character:list")
+    public Result<List<TrendDataDto>> trend(@RequestParam(defaultValue = "fame") String attributeName,
+                                            @RequestParam(required = false) String from,
+                                            @RequestParam(required = false) String to) {
+        List<TrendDataDto> data = dnfHistoryAttributeService.getTrendData(attributeName, from, to);
+        return new Result<List<TrendDataDto>>().ok(data);
     }
 
     @GetMapping("{id}")

@@ -12,6 +12,7 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * 基础服务接口，所有Service接口都要继承
@@ -95,6 +96,8 @@ public interface BaseService<T> {
      * @param id 主键ID
      */
     T selectById(Serializable id);
+
+    List<T> listByIds(Collection<? extends Serializable> ids);
 
     /**
      * <p>

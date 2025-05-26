@@ -1,6 +1,7 @@
 package io.renren.modules.dnf.service.impl;
 
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.renren.common.constant.Constant;
@@ -10,17 +11,23 @@ import io.renren.common.utils.ConvertUtils;
 import io.renren.modules.dnf.dao.DnfHistoryAttributeDao;
 import io.renren.modules.dnf.dto.DnfCharacterDto;
 import io.renren.modules.dnf.dto.DnfHistoryAttributeDto;
+import io.renren.modules.dnf.dto.TrendDataDto;
+import io.renren.modules.dnf.entity.DnfCharacterEntity;
 import io.renren.modules.dnf.entity.DnfHistoryAttributeEntity;
+import io.renren.modules.dnf.enums.DnfCareerEnum;
 import io.renren.modules.dnf.service.DnfCharacterService;
 import io.renren.modules.dnf.service.DnfHistoryAttributeService;
-import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -52,6 +59,46 @@ public class DnfHistoryAttributeServiceImpl extends BaseServiceImpl<DnfHistoryAt
     public List<DnfHistoryAttributeDto> list(Map<String, Object> params) {
         List<DnfHistoryAttributeEntity> entityList = baseDao.selectList(getWrapper(params));
         return ConvertUtils.sourceToTarget(entityList, DnfHistoryAttributeDto.class);
+    }
+
+    @Override
+    public List<TrendDataDto> getTrendData(String attributeName, String from, String to) {
+        LambdaQueryWrapper<DnfHistoryAttributeEntity> wrapper = new LambdaQueryWrapper<>();
+        wrapper.between(StringUtils.isNoneBlank(from), DnfHistoryAttributeEntity::getRecordDate, from, to);
+        List<DnfHistoryAttributeEntity> attributeEntities = baseDao.selectList(wrapper);
+        Set<Long> characterIds = attributeEntities.stream().map(DnfHistoryAttributeEntity::getCharacterId).collect(Collectors.toSet());
+        List<DnfCharacterEntity> characterEntities = dnfCharacterService.listByIds(characterIds);
+        Map<Long, DnfCharacterEntity> characterMap = characterEntities.stream().collect(Collectors.toMap(DnfCharacterEntity::getId, Function.identity()));
+
+        if ("fame".equals(attributeName)) {
+            return getTrendData(attributeEntities, characterMap, DnfHistoryAttributeEntity::getFame);
+        } else if ("simulatedDamage".equals(attributeName)) {
+            return getTrendData(attributeEntities, characterMap, DnfHistoryAttributeEntity::getSimulatedDamage);
+        }
+        return List.of();
+    }
+
+    private static List<TrendDataDto> getTrendData(List<DnfHistoryAttributeEntity> attributeEntities, Map<Long, DnfCharacterEntity> characterMap, Function<DnfHistoryAttributeEntity, ?> function) {
+        Map<Long, List<DnfHistoryAttributeEntity>> map = attributeEntities.stream().collect(Collectors.groupingBy(DnfHistoryAttributeEntity::getCharacterId));
+        return map.entrySet().stream().map(entry -> {
+            DnfCharacterEntity character = characterMap.get(entry.getKey());
+            return TrendDataDto.builder()
+                    .characterId(entry.getKey())
+                    .characterAvatar(character.getAvatar())
+                    .name(String.format("%s(%s)", character.getName(), DnfCareerEnum.careerEnumMap.get(character.getCareer()).getName()))
+                    .data(getPerTrendData(entry.getValue(), function))
+                    .build();
+        }).collect(Collectors.toList());
+    }
+
+    private static List<TrendDataDto.PerTrendDataDto> getPerTrendData(List<DnfHistoryAttributeEntity> attributeEntities, Function<DnfHistoryAttributeEntity, ?> function) {
+        return attributeEntities.stream()
+                .map(attribute -> {
+                    return TrendDataDto.PerTrendDataDto.builder()
+                            .date(attribute.getRecordDate())
+                            .value(BigDecimal.valueOf((Integer) function.apply(attribute)))
+                            .build();
+                }).collect(Collectors.toList());
     }
 
     @Override
