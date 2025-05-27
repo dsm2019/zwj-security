@@ -28,6 +28,7 @@ import java.util.Map;
 
 /**
  * DNF 角色历史属性控制器
+ *
  * @author YourName
  */
 @RestController
@@ -70,6 +71,15 @@ public class DnfHistoryAttributeController {
                                             @RequestParam(required = false) String to) {
         List<TrendDataDto> data = dnfHistoryAttributeService.getTrendData(attributeName, from, to);
         return new Result<List<TrendDataDto>>().ok(data);
+    }
+
+    @GetMapping("recordDates")
+    @Operation(summary = "有记录的日期")
+    @LogOperation("有记录的日期")
+    @RequiresPermissions("dnf:character:delete")
+    public Result<List<String>> recordDates() {
+        List<String> recordDates = dnfHistoryAttributeService.recordDates();
+        return new Result<List<String>>().ok(recordDates);
     }
 
     @GetMapping("{id}")
@@ -120,14 +130,12 @@ public class DnfHistoryAttributeController {
         return new Result();
     }
 
-    @PostMapping
+    @PostMapping("refreshRanking")
     @Operation(summary = "刷新排名")
-    @LogOperation("删除")
+    @LogOperation("刷新排名")
     @RequiresPermissions("dnf:character:delete")
     public Result<?> refreshRanking() {
-
         dnfHistoryAttributeService.refreshRanking();
-
         return new Result<>();
     }
 }

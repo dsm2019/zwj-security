@@ -25,4 +25,6 @@ public interface DnfHistoryAttributeService extends BaseService<DnfHistoryAttrib
     void delete(Long[] ids);
 
     void refreshRanking();
+
+    List<String> recordDates();
 }
