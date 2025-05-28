@@ -61,7 +61,7 @@ public class SysGeneratorController {
         // 获取当前工作目录
         String path = System.getProperty("user.dir");
         // 拼接代码存储路径
-        path = path + "/renren-generator/src/main/java/code";
+        path = path + "/code";
 
         // 创建文件对象
         File directory = new File(path);

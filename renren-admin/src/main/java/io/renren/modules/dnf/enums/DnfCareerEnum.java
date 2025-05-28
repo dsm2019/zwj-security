@@ -131,7 +131,7 @@ public enum DnfCareerEnum {
 
 
     // Unknown
-    UNKNOWN("unknown", "未知职业", 0, 0);
+    UNKNOWN("unknown", "未知职业", -1, 0);
 
     private final String career;
     private final String name;

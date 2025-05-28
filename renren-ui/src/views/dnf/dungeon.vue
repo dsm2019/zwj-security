@@ -19,6 +19,7 @@
       <el-table-column prop="name" label="名称" sortable="custom" header-align="center" align="center"></el-table-column>
       <el-table-column prop="boss" label="boss" sortable="custom" header-align="center" align="center"></el-table-column>
       <el-table-column prop="typeName" label="类型" header-align="center" align="center"></el-table-column>
+      <el-table-column prop="periodName" label="周期" header-align="center" align="center"></el-table-column>
       <el-table-column prop="createDate" label="创建时间" sortable="custom" header-align="center" align="center" width="180"></el-table-column>
       <el-table-column label="操作" fixed="right" header-align="center" align="center" width="150">
         <template v-slot="scope">

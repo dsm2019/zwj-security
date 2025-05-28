@@ -10,6 +10,7 @@ import io.renren.common.validator.group.AddGroup;
 import io.renren.common.validator.group.DefaultGroup;
 import io.renren.common.validator.group.UpdateGroup;
 import io.renren.modules.dnf.dto.DnfDungeonDto;
+import io.renren.modules.dnf.dto.DungeonPeriodDto;
 import io.renren.modules.dnf.dto.DungeonTypeDto;
 import io.renren.modules.dnf.service.DnfDungeonService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -110,10 +111,18 @@ public class DnfDungeonController {
     }
 
     @GetMapping("typeList")
-    @Operation(summary = "列表")
+    @Operation(summary = "类型列表")
     @RequiresPermissions("dnf:character:list")
     public Result<List<DungeonTypeDto>> typeList() {
         List<DungeonTypeDto> data = dnfDungeonService.typeList();
         return new Result<List<DungeonTypeDto>>().ok(data);
+    }
+
+    @GetMapping("periodList")
+    @Operation(summary = "周期列表")
+    @RequiresPermissions("dnf:character:list")
+    public Result<List<DungeonPeriodDto>> periodList() {
+        List<DungeonPeriodDto> data = dnfDungeonService.periodList();
+        return new Result<List<DungeonPeriodDto>>().ok(data);
     }
 }

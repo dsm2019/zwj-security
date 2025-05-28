@@ -8,8 +8,13 @@
         <el-input v-model="dataForm.boss" placeholder="boss"></el-input>
       </el-form-item>
       <el-form-item  prop="type" label="类型" class="type-list">
-        <el-select v-model="dataForm.type" :disabled="dataForm.parentId !== 0" placeholder="类型">
+        <el-select v-model="dataForm.type" placeholder="类型">
           <el-option v-for="type in typeList" :key="type.id" :label="type.name" :value="type.id"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item  prop="period" label="周期" class="period-list">
+        <el-select v-model="dataForm.period" placeholder="周期">
+          <el-option v-for="period in periodList" :key="period.period" :label="period.description" :value="period.period"></el-option>
         </el-select>
       </el-form-item>
     </el-form>
@@ -30,14 +35,16 @@ const emit = defineEmits(["refreshDataList"]);
 
 const visible = ref(false);
 const typeList = ref([]);
+const periodList = ref([]);
 const dataFormRef = ref();
 
 const dataForm = reactive({
   id: "",
-  parentId: 0,
+  parentId: "",
   name: "",
   boss: "",
   type: "",
+  period: "",
 });
 
 const rules = ref({
@@ -54,12 +61,15 @@ const init = (id?: number) => {
   }
 
   nextTick(() => {
-    Promise.all([getTypeList()]).then(() => {
+    Promise.all([getTypeList(),getPeriodList()]).then(() => {
       if (id) {
         getInfo(id);
       }
     });
   });
+  if (dataForm.parentId !== '0') {
+    console.log(dataForm.parentId);
+  }
 };
 
 const init2 = (row: IObject) => {
@@ -71,23 +81,30 @@ const init2 = (row: IObject) => {
   }
 
   dataForm.id = "";
-  console.log("=======", row)
   dataForm.parentId = row.id;
 
 
   nextTick(() => {
-    Promise.all([getTypeList()]).then(() => {
+    Promise.all([getTypeList(),getPeriodList()]).then(() => {
 
     });
   });
 
   dataForm.type = row.type;
+  dataForm.period = row.period;
 };
 
 // 获取类型列表
 const getTypeList = () => {
   return baseService.get("/dnf/dungeon/typeList").then((res) => {
     typeList.value = res.data;
+  });
+};
+
+// 获取周期列表
+const getPeriodList = () => {
+  return baseService.get("/dnf/dungeon/periodList").then((res) => {
+    periodList.value = res.data;
   });
 };
 

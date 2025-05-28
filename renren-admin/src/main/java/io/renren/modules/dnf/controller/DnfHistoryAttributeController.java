@@ -10,6 +10,7 @@ import io.renren.common.validator.group.AddGroup;
 import io.renren.common.validator.group.DefaultGroup;
 import io.renren.common.validator.group.UpdateGroup;
 import io.renren.modules.dnf.dto.DnfHistoryAttributeDto;
+import io.renren.modules.dnf.dto.TrendDataDto;
 import io.renren.modules.dnf.service.DnfHistoryAttributeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -27,6 +28,7 @@ import java.util.Map;
 
 /**
  * DNF 角色历史属性控制器
+ *
  * @author YourName
  */
 @RestController
@@ -59,6 +61,25 @@ public class DnfHistoryAttributeController {
         List<DnfHistoryAttributeDto> data = dnfHistoryAttributeService.list(new HashMap<>(1));
 
         return new Result<List<DnfHistoryAttributeDto>>().ok(data);
+    }
+
+    @GetMapping("trend")
+    @Operation(summary = "属性趋势")
+    @RequiresPermissions("dnf:character:list")
+    public Result<List<TrendDataDto>> trend(@RequestParam(defaultValue = "fame") String attributeName,
+                                            @RequestParam(required = false) String from,
+                                            @RequestParam(required = false) String to) {
+        List<TrendDataDto> data = dnfHistoryAttributeService.getTrendData(attributeName, from, to);
+        return new Result<List<TrendDataDto>>().ok(data);
+    }
+
+    @GetMapping("recordDates")
+    @Operation(summary = "有记录的日期")
+    @LogOperation("有记录的日期")
+    @RequiresPermissions("dnf:character:delete")
+    public Result<List<String>> recordDates() {
+        List<String> recordDates = dnfHistoryAttributeService.recordDates();
+        return new Result<List<String>>().ok(recordDates);
     }
 
     @GetMapping("{id}")
@@ -107,5 +128,14 @@ public class DnfHistoryAttributeController {
         dnfHistoryAttributeService.delete(ids);
 
         return new Result();
+    }
+
+    @PostMapping("refreshRanking")
+    @Operation(summary = "刷新排名")
+    @LogOperation("刷新排名")
+    @RequiresPermissions("dnf:character:delete")
+    public Result<?> refreshRanking() {
+        dnfHistoryAttributeService.refreshRanking();
+        return new Result<>();
     }
 }
