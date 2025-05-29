@@ -21,6 +21,8 @@ import lombok.AllArgsConstructor;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,8 +70,10 @@ public class DnfHistoryAttributeController {
     @RequiresPermissions("dnf:character:list")
     public Result<List<TrendDataDto>> trend(@RequestParam(defaultValue = "fame") String attributeName,
                                             @RequestParam(required = false) String from,
-                                            @RequestParam(required = false) String to) {
+                                            @RequestParam(required = false) String to,
+                                            @RequestParam(defaultValue = "true") boolean asc) {
         List<TrendDataDto> data = dnfHistoryAttributeService.getTrendData(attributeName, from, to);
+        data.sort(Comparator.comparing(a -> a.getData().get(0).getValue().multiply(BigDecimal.valueOf(asc ? 1 : -1))));
         return new Result<List<TrendDataDto>>().ok(data);
     }
 
@@ -136,6 +140,15 @@ public class DnfHistoryAttributeController {
     @RequiresPermissions("dnf:character:delete")
     public Result<?> refreshRanking() {
         dnfHistoryAttributeService.refreshRanking();
+        return new Result<>();
+    }
+
+    @PostMapping("fillEmptyData")
+    @Operation(summary = "填充空白数据")
+    @LogOperation("填充空白数据")
+    @RequiresPermissions("dnf:character:delete")
+    public Result<?> fillEmptyData() {
+        dnfHistoryAttributeService.fillEmptyData();
         return new Result<>();
     }
 }

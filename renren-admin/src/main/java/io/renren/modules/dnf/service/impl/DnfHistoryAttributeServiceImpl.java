@@ -213,4 +213,42 @@ public class DnfHistoryAttributeServiceImpl extends BaseServiceImpl<DnfHistoryAt
     public List<String> recordDates() {
         return baseDao.recordDates();
     }
+
+    @Override
+    public void fillEmptyData() {
+        List<String> dates = baseDao.recordDates();
+        Collections.sort(dates);
+        List<DnfCharacterDto> list = dnfCharacterService.list(new HashMap<>(1));
+        list.forEach(character -> {
+            LambdaQueryWrapper<DnfHistoryAttributeEntity> wrapper = new LambdaQueryWrapper<>();
+            wrapper.eq(DnfHistoryAttributeEntity::getCharacterId, character.getId());
+            List<DnfHistoryAttributeEntity> attributeEntities = baseDao.selectList(wrapper);
+            if (attributeEntities.size() != dates.size()) {
+                Map<String, DnfHistoryAttributeEntity> attributeMap = attributeEntities.stream().collect(Collectors.toMap(DnfHistoryAttributeEntity::getRecordDate, Function.identity()));
+                for (int i = 0; i < dates.size(); i++) {
+                    if (!attributeMap.containsKey(dates.get(i))) {
+                        DnfHistoryAttributeEntity attribute = new DnfHistoryAttributeEntity();
+                        if (i == 0) {
+                            attribute.setSimulatedDamage(0);
+                            attribute.setFame(0);
+                        } else {
+                            DnfHistoryAttributeEntity lastAttribute = attributeMap.get(dates.get(i - 1));
+                            attribute.setSimulatedDamage(lastAttribute.getSimulatedDamage());
+                            attribute.setFame(lastAttribute.getFame());
+                        }
+                        attribute.setRecordDate(dates.get(i));
+                        attribute.setCharacterId(character.getId());
+                        attribute.setCharacterName(character.getName());
+                        String[] split = dates.get(i).split("-");
+                        attribute.setYear(Integer.parseInt(split[0]));
+                        attribute.setMonth(Integer.parseInt(split[1]));
+                        attribute.setDay(Integer.parseInt(split[2]));
+                        attribute.setFill(1);
+                        attributeMap.put(dates.get(i), attribute);
+                        baseDao.insert(attribute);
+                    }
+                }
+            }
+        });
+    }
 }

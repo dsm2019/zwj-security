@@ -16,6 +16,8 @@
       </el-form>
       <div style="display: flex; gap: 10px">
         <el-button @click="state.toggleCheckboxes">{{ state.showCheckboxes ? "隐藏" : "选择" }}</el-button>
+        <!-- 新增按钮 -->
+        <el-button @click="state.fillEmptyData">填充空数据</el-button>
       </div>
       <el-button @click="state.toggleDisplayTable">
         {{ state.displayTable ? "隐藏表格" : "显示表格" }}
@@ -122,6 +124,19 @@ const state = reactive({
       })
       .catch(() => {
         this.dataListLoading = false;
+      });
+  },
+  fillEmptyData() {
+    const url = `/dnf/history-attribute/fillEmptyData`;
+    baseService
+      .post(url)
+      .then((res) => {
+        console.log('填充空数据成功', res);
+        // 填充成功后可重新获取数据
+        this.getDataList();
+      })
+      .catch((error) => {
+        console.error('填充空数据失败', error);
       });
   },
   toggleDisplayTable() {
@@ -295,7 +310,7 @@ const initZhuChart = () => {
       // 添加 label 配置
       label: {
         show: true,
-        position: 'right', // 将标签放在柱子右侧（顶部）
+        position: "right", // 将标签放在柱子右侧（顶部）
         formatter: character // 显示角色名
       }
     })),
@@ -318,8 +333,8 @@ const initZhuChart = () => {
       animationEasing: "cubicOut",
       label: {
         show: true,
-        position: 'right',
-        formatter:  character
+        position: "right",
+        formatter: character
       }
     }));
 

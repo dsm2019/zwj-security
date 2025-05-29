@@ -26,6 +26,7 @@ public class DnfHistoryAttributeEntity extends BaseEntity {
     private Integer month;
     private Integer day;
     private Integer week;
+    private Integer fill;
 
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Long updater;
